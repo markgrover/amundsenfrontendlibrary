@@ -24,5 +24,16 @@ COPY --from=node-stage /app /app
 
 RUN python3 setup.py install
 
-ENTRYPOINT [ "python3" ]
-CMD [ "amundsen_application/wsgi.py" ]
+
+# Additional steps in node-stage to get custom static conf files
+RUN apt-get update && apt-get install -y rsync npm
+ADD frontend /app/frontend/
+WORKDIR /app/frontend/
+RUN ln -s ../ upstream
+RUN chmod 755 partnerized-static-build.sh
+RUN ./partnerized-static-build.sh
+
+# ENTRYPOINT [ "python3" ]
+# instead of CMD [ "python3",  "amundsen_application/wsgi.py" ] 
+CMD [ "python3",  "frontend/upstream/amundsen_application/wsgi.py" ] 
+

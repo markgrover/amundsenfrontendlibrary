@@ -21,7 +21,7 @@ const configDefault: AppConfig = {
     plugins: [],
   },
   indexDashboards: {
-    enabled: false,
+    enabled: true,
   },
   indexUsers: {
     enabled: false,
